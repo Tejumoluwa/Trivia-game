@@ -1,6 +1,5 @@
 import random
 import re
-import time
 
 def gen_question(cat):
     """
