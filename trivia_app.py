@@ -1,52 +1,101 @@
 import random
+import re
+import time
 
 def gen_question(cat):
-        """
-        cat: contains the category specified by the user
-        politics_quest, entertainment_quest, sports_quest: is a dictionary of the questions in each category
-        quest, answer: contains randomly generated questions and its corresponding answer
-        user_answer: takes in the answer of the user to the generated question
-        second_chance: allows user change answer if unsure
-        """
-        
+    """
+    cat: contains the category specified by the user
+    politics_quest, entertainment_quest, sports_quest: is a dictionary of the questions in each category
+    quest, answer: contains randomly generated questions and its corresponding answer
+    user_answer: takes in the answer of the user to the generated question
+    second_chance: allows user change answer if unsure
+    """
+    
 
-        politics_quest = {"Who is the current President of Nigeria?": "bola ahmed tinubu",
-                    "Who is the current Senate President of Nigeria?": "godswill akpabio",
-                    "What year did the End SARS protest occur?": "2021",
-                    "How many local governments are in Nigeria?": "774",
-                    "Nigerian's current constitution was written in what year?": "1999",
-                    "What is the lowest possible political office in Nigeria": "ward council"}  
-        entertainment_quest = {"Tiwa Savage was married to which popular entertainment manager?": "bizzle",
-                               "Funke Akindele came into limelight after starring in which 90s sitcom?": "i need to know",
-                               "What is Pasuma's nickname?": "oganla one",
-                               "What character did Reminisce play in King of Boys?": "makanaki",
-                               "What Netflix movie does Temi Otedola star in?": "citation",
-                               "What's the name of Wizkid's clothing line?": "star boy"
-                               }
-        sports_quest = {"The Olympics are held every how many years?": "4 years",
-                        "What sport is best known as the 'king of sports'?": "soccer",
-                        "Who has won more tennis grand slam titles, Venus Williams or Serena Williams?": "serena williams",
-                        "According to the official FIFA rulebook, how long can a goalkeeper hold the ball?": "6 seconds",
-                        "Premier League club Liverpool is also known by which nickname?": "red",
-                        "Who is the only soccer player in history to win five FIFA Ballons d'OR?": "lionel messi"}
-        if cat == "Politics":
-            quest, answer = random.choice(list(politics_quest.items()))
-        elif cat == "Sports":
-            quest, answer = random.choice(list(sports_quest.items()))
-        else:
-            quest, answer = random.choice(list(entertainment_quest.items()))
-        while True:
-            user_answer = input(quest+": ").lower().strip()
-            second_chance = input("Is that your final answer: ").lower().strip()
-            if user_answer == answer and second_chance == "yes":
-                print("You are correct")
-                return 1
-            elif second_chance == "no":
-               continue
+    politics_quest = {"How many local governments are in Nigeria?": 
+                      ["(A) 774","(B) 750", "(C) 420", "(D) 600", "Ans: A"],
+
+                    "Nigerian's current constitution was written in what year?": 
+                    ["(A) 1973", "(B) 1999", "(C) 1927", "(D) 1989", "Ans: B"],
+
+                    "What is the lowest possible political office in Nigeria": 
+                    ["(A) Ward councillor", "(B) Local Government Chairman", "(C) Youth Leader", "(D) Party Chairman", "Ans: A"],
+
+                    "Who is the current President of Nigeria?": 
+                    ["(A) Nnamdi Azikiwe", "(B) Kashim Shettima","(C) Bola Ahmed Tinubu", "(D) Muhammadu Buhari", "Ans: C"],
+
+                    "Who is the current Senate President of Nigeria?":
+                    ["(A) Ahmad Lawan","(B) Abubakar Bukola Saraki", "(C) Ibrahim Gobir","(D) Godswill Akpabio", "Ans: D"],
+
+                    "What year did the End SARS protest occur?": 
+                    ["(A) 2020", "(B) 2021", "(C) 1920", "(D) 2022", "Ans: B"],}  
+    
+    entertainment_quest = {"Tiwa Savage was married to which popular entertainment manager?": 
+                           ["(A) Bizzle", "(B) Tee Billz", "(C) Asa Asika", "(D) Johnny Drille", "Ans: A"],
+
+                            "Funke Akindele came into limelight after starring in which 90s sitcom?": 
+                            ["(A) Jenifa", "(B) Jenifa's Diary", "(C) Omo Ghetto","(D) I Need To Know", "Ans: D"],
+
+                            "What is Pasuma's nickname?": 
+                            ["(A) Ogaranya","(B) Oganla One", "(C) Mr Paso Wonder", "(D) O.B.O", "Ans: B"],
+
+                            "What character did Reminisce play in King of Boys?": 
+                            ["(A) Alagba Ibile", "(B) Scorpion","(C) Makanaki", "(D) Oga At The Top", "Ans: C"],
+
+                            "What Netflix movie does Temi Otedola star in?":
+                              ["(A) Citation", "(B) October 1st", "(C) The Figurine", "(D) Wedding Party", "Ans: A"],
+
+                            "What's the name of Wizkid's clothing line?": 
+                            ["(A) Wizzy Baby","(B) Star Boy", "(C) Smile Clothings", "(D) Gucci", "Ans: B"]
+                            }
+    
+    sports_quest = {"The Olympics are held every how many years?": 
+                    ["(A) 4 years", "(B) 3 years", "(C) 20 years", "(D) 10 years", "Ans: A"],
+
+                    "What sport is best known as the 'king of sports'?": 
+                    ["(A) Basketball", "(B) Tennis", "(C) Soccer", "(D) Long jump", "Ans: C"],
+
+                    "According to the official FIFA rulebook, how long can a goalkeeper hold the ball?": 
+                    ["(A) 4 seconds", "(B) 1 min", "(C) 12 seconds","(D)6 seconds", "Ans: D"],
+
+                    "Premier League club Liverpool is also known by which nickname?": 
+                    ["(A) Blue", "(B) Gunners","(C) Eagles","(D) Red", "Ans: D"],
+
+                    "How many players are in a football team?": 
+                    ["(A) 6 players", "(B) 11 players", "(C) 13 players", "(D) 5 players", "Ans: B"],
+                    
+                    "What is the Nigerian Male Football team called?": 
+                    ["(A) The Falcon", "(B) Super Eagles", "(C) The Kitten", "(D) Red Devils", "Ans: B"]
+                    }
+    
+    if cat == "Politics":
+        quest, options = random.choice(list(politics_quest.items()))
+    elif cat == "Sports":
+        quest, options = random.choice(list(sports_quest.items()))
+    else:
+        quest, options = random.choice(list(entertainment_quest.items()))
+    
+    return quest, options
+
+
+def validate_answer(quest, options):
+    while True:
+        print(quest)
+        for i in options:
+            if options.index(i) == 4:
+                continue
             else:
-                print("You are wrong")
-                return 0
-
+                print(i)
+        user_answer = input().upper()
+        second_chance = input("Is that your final answer: ").lower().strip()
+        if user_answer == options[-1][-1] and second_chance == "yes":
+            print("You are correct")
+            return 1
+        elif second_chance == "no":
+            continue
+        else:
+            print("You are wrong")
+            return 0
 
 
 def collate_score(score):
@@ -95,6 +144,7 @@ each category
 ---------------------------------------------------------------------------------------------
 """)
 
+
 def main():
     """
     categories: a tuple that contains the various categories of the game
@@ -111,23 +161,27 @@ def main():
     cat_attempted = []
     quest_answered = 0
     scores = []
-    user_name = input("Username: ").capitalize().strip()
+    while True:
+        user_name = input("Username: ").capitalize().strip()
+        if re.search(r"[A-za-z]+", user_name) and len(user_name) > 2:
+            break
+        else:
+            print("Invalid username")
     rules(user_name)
     while quest_answered < 3:
         print("To begin input either one of the three categories(Politics, Entertainment, Sports)")
         category = input().capitalize().strip()
         if category in categories:
             if category not in cat_attempted:
-                score = gen_question(category)
+                quest, options = gen_question(category)
+                score = validate_answer(quest, options)
                 quest_answered += 1 
                 cat_attempted.append(category)
                 scores.append(score)
             else:
                 print("Category has been chosen")
-                break
         else:
             print("Invalid category")
-            break
     total_score = collate_score(scores)
     print(total_score)
     if total_score == 3:
