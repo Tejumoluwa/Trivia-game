@@ -86,15 +86,19 @@ def validate_answer(quest, options):
             else:
                 print(i)
         user_answer = input().upper()
-        second_chance = input("Is that your final answer: ").lower().strip()
-        if user_answer == options[-1][-1] and second_chance == "yes":
-            print("You are correct")
-            return 1
-        elif second_chance == "no":
-            continue
-        else:
-            print("You are wrong")
-            return 0
+        while True:
+            second_chance = input("Is that your final answer: ").lower().strip()
+            if second_chance == "yes" or second_chance == "no":
+                if user_answer == options[-1][-1] and second_chance == "yes":
+                    print("You are correct")
+                    return 1
+                elif second_chance == "no":
+                    continue
+                else:
+                    print("You are wrong")
+                    return 0
+            else:
+                print("Please put in yes or no")
 
 
 def collate_score(score):
