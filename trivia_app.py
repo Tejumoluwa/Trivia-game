@@ -5,9 +5,9 @@ def gen_question(cat):
     """
     cat: contains the category specified by the user
     politics_quest, entertainment_quest, sports_quest: is a dictionary of the questions in each category
-    quest, answer: contains randomly generated questions and its corresponding answer
-    user_answer: takes in the answer of the user to the generated question
-    second_chance: allows user change answer if unsure
+    quest: contains randomly generated questions 
+    options: contains a list of the options corresponding to the randomly generated question. It also contains the right answer 
+             which is the last element of the list.
     """
     
 
@@ -78,6 +78,9 @@ def gen_question(cat):
 
 
 def validate_answer(quest, options):
+    """    user_answer: takes in the answer of the user to the generated question
+           second_chance: allows user change answer if unsure
+           param:quest: this is the randomly generated question gotten from the gen_question() function"""
     while True:
         print(quest)
         for i in options:
@@ -132,6 +135,20 @@ def display_qualifiers():
             print(line)
 
 
+def unique_username(name):
+    """
+    Checks if the username is unique and returns false if it isn't
+
+    param:name: this contains the username
+    """
+    with open("qualifiers.txt") as file:
+        for line in file:
+            line = line.rstrip()
+            if line == name:
+                return False
+
+
+
 def rules(name):
     """
     prints out the rules of the game
@@ -157,6 +174,7 @@ def main():
     scores: a list that keeps the score of the user
     user_name: holds the name of the user
     total_score: stores the collated score
+    unique: stores the return value of the unique_username() funciton
 
     """
     
@@ -166,10 +184,14 @@ def main():
     scores = []
     while True:
         user_name = input("Username: ").capitalize().strip()
-        if re.search(r"[A-za-z]+", user_name) and len(user_name) > 2:
-            break
+        unique = unique_username(user_name)
+        if unique != False:
+            if re.search(r"^[A-za-z]+[0-9]*", user_name) and len(user_name) > 2:
+                break
+            else:
+                print("Invalid username")
         else:
-            print("Invalid username")
+            print("Username has been chosen")
     rules(user_name)
     while quest_answered < 3:
         print("To begin input either one of the three categories(Politics, Entertainment, Sports)")
