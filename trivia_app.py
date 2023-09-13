@@ -89,7 +89,7 @@ def validate_answer(quest, options):
             else:
                 print(i)
         user_answer = input().upper()
-        second_chance = input("Is that your final answer: ").lower().strip()
+        second_chance = input("Is that your final answer(yes/no): ").lower().strip()
         if second_chance == "yes" or second_chance == "no":
             if user_answer == options[-1][-1] and second_chance == "yes":
                 print("You are correct")
