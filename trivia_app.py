@@ -140,7 +140,8 @@ def display_qualifiers():
 
 def unique_username(name):
     """
-    Checks if the username is unique and returns false if it isn't
+    Checks if the username is unique and returns false if it isn't. 
+    This prevents the storage of duplicate usernames
 
     param:name: this contains the username
     """
