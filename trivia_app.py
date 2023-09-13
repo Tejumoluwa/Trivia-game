@@ -89,19 +89,18 @@ def validate_answer(quest, options):
             else:
                 print(i)
         user_answer = input().upper()
-        while True:
-            second_chance = input("Is that your final answer: ").lower().strip()
-            if second_chance == "yes" or second_chance == "no":
-                if user_answer == options[-1][-1] and second_chance == "yes":
-                    print("You are correct")
-                    return 1
-                elif second_chance == "no":
-                    continue
-                else:
-                    print("You are wrong")
-                    return 0
+        second_chance = input("Is that your final answer: ").lower().strip()
+        if second_chance == "yes" or second_chance == "no":
+            if user_answer == options[-1][-1] and second_chance == "yes":
+                print("You are correct")
+                return 1
+            elif second_chance == "no":
+                continue
             else:
-                print("Please put in yes or no")
+                print("You are wrong")
+                return 0
+        else:
+            print("Please put in yes or no")
 
 
 def collate_score(score):
@@ -119,20 +118,24 @@ def qualifiers_file(qualifier):
     """
     writes qualifier's name to the text file, qualifiers.txt
     """
-
-    with open("qualifiers.txt", "a") as file:
-        file.write(qualifier+"\n")
+    try:
+        with open("qualifiers.txt", "a") as file:
+            file.write(qualifier+"\n")
+    except:
+        print("Something went wrong while trying to open the file")
 
 
 def display_qualifiers():
     """
     displays the qualifiers in the qualifiers.txt file to the user
     """
-
-    with open("qualifiers.txt") as file:
-        for line in file:
-            line = line.rstrip()
-            print(line)
+    try:
+        with open("qualifiers.txt") as file:
+            for line in file:
+                line = line.rstrip()
+                print(line)
+    except:
+        print("Something went wrong while trying to open the file")
 
 
 def unique_username(name):
